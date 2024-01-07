@@ -1,6 +1,7 @@
-
+import io
+import base64
 import cmath
-from shapely.geometry import Polygon
+#from shapely.geometry import Polygon
 import matplotlib.pyplot as plt
 import pandas as pd
 from rdkit import Chem
@@ -46,9 +47,48 @@ def calculate_biological_area2(list_tupple_rate_efficacy):
     origin_list.reverse()
     t = tuple(copy_list + origin_list)
     polygon = Polygon(t)
-    #plt.plot(*polygon.exterior.xy)
-    #plt.show()
+    plt.plot(*polygon.exterior.xy)
+    plt.show()
     return round( polygon.area / 100  ,2 )
+
+def transform(x):
+    #return x
+    return cmath.log(x).real
+
+def display_biological_area(list_tupple_rate_efficacy):
+    n = len(list_tupple_rate_efficacy) 
+    #points = [( transform(list_tupple_rate_efficacy[0][0]) , 0)  ]
+    xlist = []
+    ylist = []
+    
+    for i in range(n):
+        xlist.append( list_tupple_rate_efficacy[i][0] )
+        ylist.append( list_tupple_rate_efficacy[i][1])
+
+    
+    plt.xscale('log')
+    plt.xticks(ticks= xlist, labels=xlist)
+    plt.xlabel('Concentration')
+    
+    plt.yticks(ticks= ylist, label = ylist) #width=100, height=100 )
+    plt.ylabel('Efficacy')
+    plt.ylim((0,105))
+    plt.plot(xlist, ylist, marker = 'o')
+    #plt.plot(*polygon.exterior.xy)
+    
+    #plt.show()
+    #plt.fill(points)
+    
+    
+    #plt.update_yaxes(autorange='reversed')
+    
+    my_stringIObytes = io.BytesIO()
+    plt.savefig(my_stringIObytes, format='png')
+    my_stringIObytes.seek(0)
+    img_as_base64 = base64.b64encode(my_stringIObytes.read()).decode()
+
+    return img_as_base64
+    
 
 def calculate_biological_area(list_tupple_rate_efficacy):
     n = len(list_tupple_rate_efficacy)-1 
@@ -125,23 +165,11 @@ results = [
 ]
 
 
-results = [
-(5,[(50,100),(12.5,100),(3.125,100),(0.7813,100),(0.1953,100),(0.0488,100)]),
-(3.5,[(50,100),(12.5,100),(3.125,100),(0.7813,100),(0.1953,100),(0.0488,70)]),
-(3,[(50,100),(12.5,100),(3.125,100),(0.7813,100),(0.1953,100),(0.0488,0)]),
+results2 = [
+#(5,[(50,100),(12.5,100),(3.125,100),(0.7813,100),(0.1953,100),(0.0488,100)]),
+(3.5,[(50,100),(12.5,70),(3.125,100),(0.7813,100),(0.1953,100),(0.0488,70)]),
+#(3,[(50,100),(12.5,100),(3.125,100),(0.7813,100),(0.1953,100),(0.0488,0)]),
 
 ]
 
-
-
-
-
-for results in results:
-    old_score = results[0]
-    list_tupple_rate_efficacy = results[1]
-
-    new_score = calculate_biological_area2(list_tupple_rate_efficacy)
-    diff = calculate_biological_area(list_tupple_rate_efficacy)
-    print(old_score,new_score, diff)
-    
-
+plt.xlabel('Concentration')

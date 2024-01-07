@@ -7,11 +7,21 @@ a web visualizer to display chemical compounds and associated data
 
 2. Create environment
 
-```py -m venv decideenv```
+on Windows:
+    ```py -m venv decideenv```
+on Linux/macOS:
+    ```python3 -m venv decideenv```
 
 3. Activate environment
 
-```.\decideenv\Scripts\activate```
+on Windows:
+    ```.\decideenv\Scripts\activate```
+on Linux/macOS: 
+    ```./decideenv/bin/activate```
+    
+( if you get a permission deny, execute this command 
+    ```chmod u+x ./decideenv/bin/activate```
+)
 
 4. Install requirements
 
