@@ -1,4 +1,4 @@
-# decide
+# Decide
 a web visualizer to display chemical compounds and associated data
 
 1. Clone git
