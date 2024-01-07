@@ -9,6 +9,7 @@ a web visualizer to display chemical compounds and associated data
 
 on Windows:
     ```py -m venv decideenv```
+
 on Linux/macOS:
     ```python3 -m venv decideenv```
 
@@ -16,6 +17,7 @@ on Linux/macOS:
 
 on Windows:
     ```.\decideenv\Scripts\activate```
+    
 on Linux/macOS: 
     ```./decideenv/bin/activate```
     
