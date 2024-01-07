@@ -57,7 +57,6 @@ def transform(x):
 
 def display_biological_area(list_tupple_rate_efficacy):
     n = len(list_tupple_rate_efficacy) 
-    #points = [( transform(list_tupple_rate_efficacy[0][0]) , 0)  ]
     xlist = []
     ylist = []
     
@@ -65,25 +64,35 @@ def display_biological_area(list_tupple_rate_efficacy):
         xlist.append( list_tupple_rate_efficacy[i][0] )
         ylist.append( list_tupple_rate_efficacy[i][1])
 
+    xpolygon = xlist
+    xpolygon.insert(0, list_tupple_rate_efficacy[0][0])
+    xpolygon.append(list_tupple_rate_efficacy[n-1][0] )
+    
+    ypolygon = ylist
+    ypolygon.insert(0, 0)
+    ypolygon.append(0)
     
     plt.xscale('log')
-    plt.xticks(ticks= xlist, labels=xlist)
-    plt.xlabel('Concentration')
+    plt.xticks(ticks= xlist, labels=xlist, minor=False, rotation='vertical')
     
-    plt.yticks(ticks= ylist, label = ylist) #width=100, height=100 )
-    plt.ylabel('Efficacy')
+    #plt.xlabel('Concentration')
+    plt.xlabel('')
+    
+    plt.gca().get_xaxis().set_inverted("inverse")
+    plt.gca().spines['top'].set_visible(False)
+    plt.gca().spines['right'].set_visible(False)
+    plt.xlim((max(xlist),min(xlist)))
+    
+    plt.yticks(ticks= ylist, label = ylist)
+    #plt.ylabel('Efficacy')
     plt.ylim((0,105))
     plt.plot(xlist, ylist, marker = 'o')
-    #plt.plot(*polygon.exterior.xy)
     
-    #plt.show()
-    #plt.fill(points)
-    
-    
-    #plt.update_yaxes(autorange='reversed')
+    plt.fill(xpolygon, ypolygon, alpha=0.2, facecolor='yellow')
+    #plt.figure(figsize=(2, 2))
     
     my_stringIObytes = io.BytesIO()
-    plt.savefig(my_stringIObytes, format='png')
+    plt.savefig(my_stringIObytes, format='png' )
     my_stringIObytes.seek(0)
     img_as_base64 = base64.b64encode(my_stringIObytes.read()).decode()
 

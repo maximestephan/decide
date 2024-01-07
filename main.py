@@ -23,12 +23,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def search():
-    data = [(50,100),(12.5,70),(3.125,100),(0.7813,70),(0.1953,50),(0.0488,20)]
+    data = [(50,100),(12.5,90),(3.125,100),(0.7813,70),(0.1953,50),(0.0488,20)]
 
     base64img = helpers.display_biological_area( data )
-    html = f"<img src='data:image/jpeg;base64,{base64img}' >"
+    html = f"<img  src='data:image/jpeg;base64,{base64img}' >"
     return html
     return render_template('main.html')
-
+    "*/width='100' height='100'/*"
 
 
