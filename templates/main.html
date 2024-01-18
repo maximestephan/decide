@@ -1,34 +1,190 @@
-<html>
+    <html>
 <head>
     <title>Decide</title>
     
     <style>
 
 
-        body {
-            font: 10pt Arial;
-        }
+body {
+    font-family: Arial;
+    padding: 0px;
+    margin: 0px;
+    font-size: 9pt;
+}
+
+
+.maintable {
+    width: min-content;
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 2px;
+    border: 1px solid #A9A9A9;
+}
+
+th {
+    cursor: pointer;
+    position: sticky;
+    top: 0; 
+    z-index: 5;
+    background-color : #F5F5F5;
+
+    vertical-align: top;
+    font: 8pt Arial;
+    font-weight: 100;
+    padding: 5px 3px;
+    border: 1px solid #A9A9A9;
+}
+
+td
+{
+    border: 1px solid #D0D0D0;
+    text-align: center;
+    padding: 5px 3px;
+    font: 8pt Arial;
+    min-width: 45px;
+    max-width: 275px;
+    border: 1px solid #A9A9A9;
+
+}
+
+.pBP80
+{  font-size: 16pt;
+    min-width: 75px; 
+    height:100%;
+    /*display: inline-grid;*/
+  align-items: center;
+  align-content: center;
+  cursor: pointer;
+}
+
+.stickySelect {
+    
+    min-width: 50px;
+    height:100px;
+    position: sticky;
+    left: 4px; 
+    z-index: 3;
+    background-color: white;
+    border-right: 0;
+}
+
+.observable {
+
+    height:100px;
+}
+
+
+.stickySelectHeader {
+    /*cursor: default;*/
+    position: sticky;
+    left: 4px; 
+    z-index: 20;
+}
+
+.stickyCSN {
+    min-width: 100px; 
+    height:100px;
+    position: sticky;
+    left: 58px; 
+    z-index: 5;
+    background-color: white;    
+    border-right: 0;
+    border-left: 0; 
+}
+
+.stickyCSNHeader {
+    min-width: 100px; 
+    height:100px;
+    position: sticky;
+    left: 54px; 
+    z-index: 20;
+     
+}
+
+.stickyImage {
+    position: sticky;
+    left: 0px; 
+    z-index: 4;
+    background-color: white;
+    border-left: 0;
+}
+
+.stickyImageHeader {
+    cursor: default;
+    position: sticky;
+    left: 164px; 
+    z-index: 20;
+}
 
         
     </style>
     
     <script type="text/javascript" charset="utf-8">
        
+       function readRowTableAjax(index) {
+        console.log('Loading row ' + index);
+        let xmlhttp= window.XMLHttpRequest ?        new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4){
+                if (  this.status === 200){
+                    //document.body.style.cursor = 'default';
+                    // update tr from response 
+                    //console.log('Row ' + index + "getted");
+                    //document.getElementById(index).parentElement.innerHTML = this.responseText;
+                    //document.getElementById(index).parentElement.insertAdjacentHTML("afterbegin",this.responseText);
+                    document.getElementById(index).insertAdjacentHTML("afterbegin",this.responseText);
+
+
+                    }
+                /*else if (  this.status === 204){
+                    document.body.style.cursor = 'default';
+                    submitFormAjax();
+                    }*/
+                else
+                {
+                    template = document.createElement('template');
+                    template.innerHTML = this.responseText.trim();
+                    document.getElementById('read_iframe').innerHTML = "<h2>Error</h2>" + template.content.lastChild.textContent.replace(/\n/g,'<br>');
+                }
+            }
+        }
+        xmlhttp.open("POST","/readrow/",true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        //let length = document.getElementById('numrow').innerHTML;
+        xmlhttp.send("session=" + session + "&index=" + index ); 
+        //document.body.style.cursor = 'wait';
+        
+}
+
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(({ target, isIntersecting }) => {
+	if ( isIntersecting ) {
+		var index = target.getAttribute("id"); 
+        //console.log('discover ' + index);
+        readRowTableAjax(index);
+		observer.unobserve(target);
+	}
+  });
+});
+
+function startToObserve(){
+    document.querySelectorAll(".observable").forEach(elem => observer.observe(elem));
+}
+
+
+
+session =  "{{ uid }}";
+
     </script>
 </head>
 <body>
-    
     {{ table | safe }}
 
-    <div id="table">
 
-    </div>
-
-    <div id="messages">
-        <h1>Welcome to Decide</h1>
-
-    </div>
-
+<script>
+    startToObserve();
+</script>
 </body>
 </html>
 
