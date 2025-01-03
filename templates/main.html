@@ -10,42 +10,122 @@ body {
     padding: 0px;
     margin: 0px;
     font-size: 9pt;
+    background-color: #F5F5F5;
 }
 
 
 .maintable {
     width: min-content;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
+    border-collapse: separate;
+    border-spacing: 0;
     margin: 0px;
-    padding: 2px;
+    padding: 0px;
     border: 1px solid #A9A9A9;
 }
 
 th {
-    cursor: pointer;
     position: sticky;
     top: 0; 
     z-index: 5;
-    background-color : #F5F5F5;
+    background-color :#e1e1e1;
 
     vertical-align: top;
     font: 8pt Arial;
     font-weight: 100;
     padding: 5px 3px;
-    border: 1px solid #A9A9A9;
+    border-top: 1px solid #A9A9A9;
+    border-bottom: 1px solid #A9A9A9;
+    border-right: 1px solid #A9A9A9;
+}
+
+
+.sortableHeader {
+    cursor: pointer;
+ 
 }
 
 td
 {
-    border: 1px solid #D0D0D0;
     text-align: center;
-    padding: 5px 3px;
+    padding: 0px 0px;
     font: 8pt Arial;
     min-width: 45px;
     max-width: 275px;
-    border: 1px solid #A9A9A9;
     user-select: all;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #A9A9A9;
+    border-right: 1px solid #A9A9A9;
 
+}
+
+table th:first-child,
+table td:first-child {
+  border-left: 1px solid #A9A9A9;
+}
+
+
+.stickySelect {
+    
+    min-width: 50px;
+    height:100px;
+    position: sticky;
+    left: 4px; 
+    z-index: 3;
+    background-color: white;
+    border-right: 0;
+}
+
+.observable {
+    height:100px;
+}
+
+
+.stickyHeaderIndex {
+    position: sticky;
+    left: 1px; 
+    top: 0px;
+    z-index: 20;
+}
+
+.stickyHeaderMolecule {
+    position: sticky;
+    left: 56px; 
+    top: 0px;
+    z-index: 20;
+}
+
+.stickyHeaderName {
+    position: sticky;
+    left: 258px; 
+    top: 0px;
+    z-index: 20;
+}
+
+.stickyIndex {
+    min-width: 52px; 
+    height:100px;
+    position: sticky;
+    left: 1px; 
+    background-color:rgb(245, 245, 245);
+    z-index: 5;
+     
+}
+
+.stickyMolecule {
+    position: sticky;
+    left: 56px; 
+    z-index: 4;
+    background-color: #F5F5F5;
+    border-left: 0;
+}
+
+.stickyName {
+    position: sticky;
+    left: 258px; 
+    z-index: 4;
+    background-color: #F5F5F5;
+    border-left: 0;
 }
 
 .pBP80
@@ -66,64 +146,6 @@ td
 
 }
 
-.stickySelect {
-    
-    min-width: 50px;
-    height:100px;
-    position: sticky;
-    left: 4px; 
-    z-index: 3;
-    background-color: white;
-    border-right: 0;
-}
-
-.observable {
-
-    height:100px;
-}
-
-
-.stickySelectHeader {
-    /*cursor: default;*/
-    position: sticky;
-    left: 4px; 
-    z-index: 20;
-}
-
-.stickyCSN {
-    min-width: 100px; 
-    height:100px;
-    position: sticky;
-    left: 58px; 
-    z-index: 5;
-    background-color: white;    
-    border-right: 0;
-    border-left: 0; 
-}
-
-.stickyCSNHeader {
-    min-width: 100px; 
-    height:100px;
-    position: sticky;
-    left: 54px; 
-    z-index: 20;
-     
-}
-
-.stickyImage {
-    position: sticky;
-    left: 0px; 
-    z-index: 4;
-    background-color: white;
-    border-left: 0;
-}
-
-.stickyImageHeader {
-    cursor: default;
-    position: sticky;
-    left: 164px; 
-    z-index: 20;
-}
 
         
     </style>

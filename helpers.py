@@ -149,4 +149,4 @@ def cleanFile(filename):
             
 
 
-#cleanFile('data\wikipedia.csv')
+#cleanFile('data/wikipedia.csv')

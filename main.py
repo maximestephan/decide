@@ -36,9 +36,12 @@ def search():
         df = PandasTools.LoadSDF(filename, molColName='Molecule')
         #mols = Chem.MultithreadedSDMolSupplier(filename, numWriterThreads=8, molCol='Molecule')
 
-
+    if("Name" not in df.columns):
+        df['Name'] = df['Molecule'].apply(lambda x: Chem.InchiToInchiKey(Chem.MolToInchi(x, options='-KET -15T')))
 
     df.insert(0, 'Molecule', df.pop('Molecule'))
+    
+    df.reset_index(inplace=True)
     globals()[uid] = df 
 
     table = "<table class='maintable'>"
@@ -46,8 +49,16 @@ def search():
         if (index == 0 ):
             table += "<tr>"
             for column in df.columns:
-                column_name = str(column).replace('_',' ').replace('*',' ').replace('.','<br>')
-                table += "<th name='"+ str(column) + "' onclick='sortHeader(this)'  title='Click to sort by this column'>" + column_name + "</th>"        
+                if column == 'index': 
+                    table += "<th  class='stickyHeaderIndex'>&nbsp;</th>"        
+                elif column == 'Molecule':
+                    table += "<th  class='stickyHeaderMolecule'>Molecule</th>"     
+                elif column == 'Name':
+                    table += "<th  class='stickyHeaderName'>Name</th>"  
+                else:
+                    class_sticky = ""
+                    column_name = str(column).replace('_',' ').replace('*',' ').replace('.','<br>')
+                    table += "<th name='"+ str(column) + "' class='sortableHeader' onclick='sortHeader(this)'  title='Click to sort by this column'>" + column_name + "</th>"        
             table += "</tr>"    
         table += f"<tr id='{str(index)}' class='observable' ></tr>"
     table += "</table>"
@@ -77,15 +88,22 @@ def renderRow(row, columns):
                 drawer.drawOptions().useBWAtomPalette()
                 drawer.SetLineWidth(0.9)
                 drawer.drawOptions().minFontSize = 9
+                color=(245/255.0,245/255.0, 245/255.0, 245/255.0)
+                drawer.drawOptions().setBackgroundColour(color)
+
+
+
                 rdMolDraw2D.PrepareAndDrawMolecule(drawer, row['Molecule'])                
-                table += f"""<td class='stickyImage'><div style=' height: 100px; width: 200px;'><img src='data:image/png;base64, {base64.b64encode(drawer.GetDrawingText()).decode('utf8')}' /></div></td>"""
+                table += f"""<td class='stickyMolecule'><div style=' height: 100px; width: 200px;'><img src='data:image/png;base64, {base64.b64encode(drawer.GetDrawingText()).decode('utf8')}' /></div></td>"""
             except Exception as ex :
                 print("An exception occurred ")
-                table += f"<td class='stickyImage'><div style=' display: table-cell;  border: 0px solid black; height: 104px; width: 204px;'><img src='data:image/png;base64,xxx' /></div></td>"
+                table += f"<td class='stickyMolecule'><div style=' display: table-cell;  border: 0px solid black; height: 104px; width: 204px;'><img src='data:image/png;base64,xxx' /></div></td>"
         elif ( column == "SMILES"):
             table += "<td class='smiles' >" + str(row[column]) + "</td>"
+        elif ( column == "index"):
+            table += "<td class='stickyIndex' >" + str(row[column]) + "</td>"
         elif ( column == "Name"):
-            table += "<td><a target='_blank' href='https://en.wikipedia.org/wiki/" + str(row[column]) + "'>" + str(row[column]) + "</a></td>"
+            table += "<td class='stickyName'><a target='_blank' href='https://en.wikipedia.org/wiki/" + str(row[column]) + "'>" + str(row[column]) + "</a></td>"
         
         else:
             
