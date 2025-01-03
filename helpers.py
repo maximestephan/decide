@@ -1,12 +1,30 @@
 import io
 import base64
 import cmath
+from math import log10, floor
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Descriptors
+
+def round_to_one_significant_decimal(x):
+    if "e" in str(f"{x:.3g}"):
+        if x > 1 or x < -1:
+            return int(x)
+        else:
+            decimals = -floor(log10(abs(x)))
+            as_str = f'{{:.{decimals}f}}'.format(x)
+            chunks = []
+            start_chunk = as_str.find('.') + 4
+            chunks.append(as_str[:start_chunk])
+            for i in range(start_chunk, len(as_str), 3):
+                chunks.append(as_str[i:i+3])
+            return ' '.join(chunks)
+
+    return f"{x:.3g}"
+    #return round(x, -int(floor(log10(abs(x)))))
 
 
 def calculate_pBP8x(list_tupple_rate_efficacy, x):

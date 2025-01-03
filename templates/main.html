@@ -44,6 +44,7 @@ td
     min-width: 45px;
     max-width: 275px;
     border: 1px solid #A9A9A9;
+    user-select: all;
 
 }
 
@@ -55,6 +56,14 @@ td
   align-items: center;
   align-content: center;
   cursor: pointer;
+}
+
+.smiles {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    //user-select: all;
+    overflow: hidden;
+
 }
 
 .stickySelect {
@@ -122,7 +131,7 @@ td
     <script type="text/javascript" charset="utf-8">
        
        function readRowTableAjax(index) {
-        console.log('Loading row ' + index);
+        //console.log('Loading row ' + index);
         let xmlhttp= window.XMLHttpRequest ?        new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
         xmlhttp.onreadystatechange = function() {
             if (this.readyState === 4){

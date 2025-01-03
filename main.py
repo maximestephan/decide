@@ -10,6 +10,7 @@ from rdkit.Chem.Draw import rdMolDraw2D
 from rdkit.Chem import Draw
 from json import dumps
 from flask import Flask, render_template
+import math
 import base64
 import uuid
 import hashlib
@@ -17,7 +18,7 @@ import helpers
 
 app = Flask(__name__)
 
-filename = 'data\wikipedia.csv'
+filename = ("data/wikipedia.csv")
 
 @app.route('/')
 def search():
@@ -81,7 +82,29 @@ def renderRow(row, columns):
             except Exception as ex :
                 print("An exception occurred ")
                 table += f"<td class='stickyImage'><div style=' display: table-cell;  border: 0px solid black; height: 104px; width: 204px;'><img src='data:image/png;base64,xxx' /></div></td>"
+        elif ( column == "SMILES"):
+            table += "<td class='smiles' >" + str(row[column]) + "</td>"
+        elif ( column == "Name"):
+            table += "<td><a target='_blank' href='https://en.wikipedia.org/wiki/" + str(row[column]) + "'>" + str(row[column]) + "</a></td>"
+        
         else:
-                table += "<td>" + str(row[column]) + "</td>"
+            
+            if isinstance(row[column],float):
+                if math.isnan(row[column]):
+                    tdvalue = ""
+                #elif row[column] == 0:
+                #    tdvalue = "0"
+                else:
+                    try:
+                        tdvalue = "<span title='"+str(row[column])+"'>" + str(helpers.round_to_one_significant_decimal(row[column])) + "</span>"
+                    except Exception as ex :
+                        print("An exception occurred ")
+                        tdvalue = "<span style='color:red' >" + str(row[column]) + "</span>"
+
+            else:
+                tdvalue = str(row[column] )
+            table += "<td>" + tdvalue + "</td>"
     table += "</tr>"
     return table
+
+

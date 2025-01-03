@@ -36,3 +36,8 @@ on Linux/macOS:
 6. run Decide locally on your browser
 
 open a browser on http://127.0.0.1:8080
+
+
+
+
+Note: the molecules are the one present on Wikipedia and put it together thanks to https://wikipedia.cheminfo.org/
