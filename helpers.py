@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Descriptors
+from rdkit.Chem import PandasTools
+
 
 def round_to_one_significant_decimal(x):
     if "e" in str(f"{x:.3g}"):
@@ -150,3 +152,4 @@ def cleanFile(filename):
 
 
 #cleanFile('data/wikipedia.csv')
+

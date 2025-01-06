@@ -1,3 +1,5 @@
 decideenv/
 .flaskenv
 __pycache__/
+todo.txt
+.gitignore

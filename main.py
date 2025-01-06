@@ -18,10 +18,21 @@ import helpers
 
 app = Flask(__name__)
 
-filename = ("data/wikipedia.csv")
+#filename = ("data/wikipedia.csv")
+#filename = ("data/chembl_sars.sdf")
 
 @app.route('/')
-def search():
+def index():
+    list_string = ""
+    file_list = os.listdir('data/')
+    for file in file_list:
+        list_string += f"<option value='{file}'>{file}</option>"
+    return render_template('index.html', list_string=list_string)
+
+
+@app.route('/table/<filename>')
+def table(filename):
+    filename = "data/" + filename
     uid = uuid.uuid4().hex
     if filename.endswith('.csv'):
         print('Loading csv')
@@ -32,12 +43,19 @@ def search():
         df['Molecule'] = df['Molecule'].apply(lambda Molecule: Molecule if Molecule else Chem.MolFromSmiles('') )
     elif filename.endswith('.sdf'):
         print('Loading sdf')
-        #PandasTools.WriteSDF(df, 'data\wikipedia.sdf', molColName='Molecule', idName=None, properties=list(df.columns) )
-        df = PandasTools.LoadSDF(filename, molColName='Molecule')
-        #mols = Chem.MultithreadedSDMolSupplier(filename, numWriterThreads=8, molCol='Molecule')
+        #df = PandasTools.LoadSDF(filename, molColName='Molecule')
+        mol_supplier = Chem.MultithreadedSDMolSupplier(filename, numWriterThreads=5)
+        molecules = []
+        for mol in mol_supplier:
+            if mol is not None:
+                props = mol.GetPropsAsDict()
+                props["Title"] = mol.GetProp("_Name")
+                props["Molecule"] = mol
+                molecules.append(props)
+        df = pd.DataFrame(molecules)
 
-    if("Name" not in df.columns):
-        df['Name'] = df['Molecule'].apply(lambda x: Chem.InchiToInchiKey(Chem.MolToInchi(x, options='-KET -15T')))
+    #if("Name" not in df.columns):
+    #    df['Name'] = df['Molecule'].apply(lambda x: Chem.InchiToInchiKey(Chem.MolToInchi(x, options='-KET -15T')))
 
     df.insert(0, 'Molecule', df.pop('Molecule'))
     
